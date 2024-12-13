@@ -28,7 +28,7 @@ const createWindow = (): void => {
     height: 900,
     width: 1400,
     frame: false,
-    icon: path.join(__dirname, "assets/icons/pencil-icon.png"),
+    icon: path.join(__dirname, "assets/icons/pencil.ico"),
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },

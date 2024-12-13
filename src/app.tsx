@@ -1,80 +1,109 @@
-import { useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { useEffect, useState } from "react";
 import { CreateTodoDialog } from "@/components/create-todo";
 import { TodoCard } from "@/components/todo-card";
-import { Todo } from "@/types/todo";
+import { Todo, TodosResponseType } from "@/types/todo";
 import { Input } from "@/components/ui/input";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/providers/ThemeProvider";
+import { toast } from "sonner";
+import TitleBar from "./components/title-bar";
 
 export function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [search, setSearch] = useState("");
   const { theme, toggleTheme } = useTheme();
 
+  useEffect(() => {
+    window.electron.loadTodos().then((data: TodosResponseType) => {
+      if (data.data)
+        setTodos(
+          data.data.todos.map((todo) => ({ ...todo, id: todo.id.toString() }))
+        );
+    });
+  }, []);
+
   const handleCreateTodo = (todoData: Omit<Todo, "id">) => {
-    const id = Math.random().toString(36);
-    const newTodo: Todo = {
-      ...todoData,
-      id,
-    };
-    window.electron
-      .createTodo(todoData)
-      .then((response) => {
+    const createTodo = async () => {
+      try {
+        const response = await window.electron.createTodo(todoData);
         if (response.success) {
-          console.log("Todo created successfully with ID:", response.result);
-        } else {
-          console.error("Error creating todo:", response.error);
+          const newTodo: Todo = {
+            ...todoData,
+            id: response.resultId.toString(),
+          };
+          setTodos((prev) => [...prev, newTodo]);
+          toast.success("Todo created successfully");
         }
-      })
-      .catch((err: unknown) => console.error("Unexpected error:", err));
+      } catch (error) {
+        toast.error("There was an error creating the todo");
+      }
+    };
 
-    setTodos((prev) => [...prev, newTodo]);
+    createTodo();
   };
 
-  const handleEditTodo = (editedTodo: Omit<Todo, "id">, id: string) => {
-    setTodos((prev) =>
-      prev.map((todo) => (todo.id === id ? { ...todo, ...editedTodo } : todo))
-    );
+  const handleEditTodo = async (editedTodo: Todo, todos: Todo) => {
+    try {
+      const res = await window.electron.editTodo(editedTodo);
+      if (!res.success)
+        return toast.error("There was an error updating the todo");
+      toast.success("Todo updated successfully");
+      setTodos((prev) =>
+        prev.map((todo) =>
+          todo.id === editedTodo.id ? { ...todo, ...editedTodo } : todo
+        )
+      );
+    } catch (error) {
+      toast.error("There was an error deleting the todo");
+    }
   };
 
-  const handleDeleteTodo = (id: string) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  const handleDeleteTodo = async (id: string) => {
+    try {
+      const res = await window.electron.deleteTodo(Number(id));
+      if (!res.success)
+        return toast.error("There was an error deleting the todo");
+      toast.success("Todo deleted successfully");
+      setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    } catch (error) {
+      toast.error("There was an error deleting the todo");
+    }
   };
 
-  const handleToggleTodo = (id: string) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  const handleToggleTodo = async (todo: Todo) => {
+    try {
+      const res = await window.electron.toggleTodo({
+        ...todo,
+        completed: !todo.completed,
+      });
+      if (!res.success)
+        return toast.error("There was an error toggling the todo");
+
+      setTodos((prev) =>
+        prev.map((t) =>
+          t.id === todo.id ? { ...t, completed: !t.completed } : t
+        )
+      );
+      toast.success("Todo toggled successfully");
+    } catch (error) {
+      toast.error("There was an error toggling the todo");
+    }
   };
 
   const filteredTodos = todos.filter((todo) =>
     todo.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-
-    const items = Array.from(filteredTodos);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setTodos(items);
-  };
-
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto p-4">
+    <div className="min-h-screen bg-background text-foreground tracking-tight">
+      <TitleBar />
+      <div className="mx-auto p-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-          <h1 className="text-2xl font-bold text-foreground">Notes</h1>
+          <h1 className="text-2xl font-bold text-foreground">
+            📝 EasyNotes
+            <span className="text-xs font-extralight italic"> v1.0</span>
+          </h1>
           <div className="flex items-center gap-4 w-full sm:w-auto">
             <CreateTodoDialog onSubmit={handleCreateTodo} />
             <Button
@@ -96,45 +125,24 @@ export function App() {
             type="search"
             placeholder="Search notes..."
             value={search}
+            className="ring-1 ring-white/50"
             onChange={(e) => setSearch(e.target.value)}
           />
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="todos">
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-                >
-                  {filteredTodos.map((todo, index) => (
-                    <Draggable
-                      key={todo.id}
-                      draggableId={todo.id}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <TodoCard
-                            todo={todo}
-                            onDelete={handleDeleteTodo}
-                            onEdit={(editedTodo) =>
-                              handleEditTodo(editedTodo, todo.id)
-                            }
-                            onToggle={handleToggleTodo}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+            {filteredTodos &&
+              filteredTodos.map((todo) => (
+                <TodoCard
+                  key={todo.id}
+                  todo={todo}
+                  onDelete={handleDeleteTodo}
+                  onEdit={(editedTodo) =>
+                    handleEditTodo({ ...editedTodo, id: todo.id }, todo)
+                  }
+                  onToggle={handleToggleTodo}
+                />
+              ))}
+          </div>
         </div>
       </div>
     </div>

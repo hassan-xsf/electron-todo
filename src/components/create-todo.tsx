@@ -77,8 +77,11 @@ export function CreateTodoDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {mode === "create" ? (
-          <Button variant="default" className="w-full">
-            <Plus className="mr-2 h-4 w-4" /> New Note
+          <Button
+            variant="default"
+            className="w-full text-white bg-gradient-to-r from-purple-500 to-pink-500"
+          >
+            <Plus className="mr-1 h-5 w-5 text-white" /> New Note
           </Button>
         ) : (
           <Button variant="ghost" size="icon" className="hover:bg-white/20">

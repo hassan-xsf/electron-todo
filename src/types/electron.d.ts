@@ -1,12 +1,17 @@
-import { Todo } from "./todo";
+import { ResponseType, Todo } from "./todo";
 
 declare global {
   interface Window {
     electron: {
-      createTodo: (
-        todo: Omit<Todo, "id">
-      ) => Promise<{ success: boolean; result: any; error: string }>;
+      createTodo: (todo: Omit<Todo, "id">) => Promise<CreateTodoType>;
+      deleteTodo: (todoId: number) => Promise<ResponseType>;
+      editTodo: (todo: Todo) => Promise<TodosResponseType>;
+      toggleTodo: (todo: Todo) => Promise<TodosResponseType>;
+      loadTodos: () => Promise<TodosResponseType>;
       healthCheck: (msg: string) => void;
+      minimize: () => () => void;
+      maximize: () => () => void;
+      close: () => () => void;
     };
   }
 }

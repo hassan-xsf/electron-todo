@@ -1,1 +1,1 @@
-CREATE TABLE todos ( id VARCHAR(36) PRIMARY KEY, title VARCHAR(255) NOT NULL, description TEXT, deadline VARCHAR(100) DEFAULT '', color VARCHAR(255), completed BOOLEAN DEFAULT FALSE );
+CREATE TABLE `todos_db`.`todos` (`ID` INT(10) NULL DEFAULT NULL , `title` VARCHAR(32) NOT NULL , `description` VARCHAR(256) NOT NULL , `completed` BOOLEAN NOT NULL , `deadline` VARCHAR(256) NOT NULL , `color` VARCHAR(256) NOT NULL ) ENGINE = InnoDB;

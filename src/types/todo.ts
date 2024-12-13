@@ -9,6 +9,19 @@ export interface Todo {
   color: string;
 }
 
+export interface CreateTodoType extends ResponseType {
+  resultId?: number;
+}
+export interface TodosResponseType extends ResponseType {
+  data?: {
+    todos: Todo[];
+  };
+}
+export type ResponseType = {
+  success: boolean;
+  error?: string;
+};
+
 export type TodoColor =
   | "orange"
   | "green"

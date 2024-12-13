@@ -9,13 +9,13 @@ interface TodoCardProps {
   todo: Todo;
   onDelete: (id: string) => void;
   onEdit: (todo: Omit<Todo, "id">) => void;
-  onToggle: (id: string) => void;
+  onToggle: (todo: Todo) => void;
 }
 
 export function TodoCard({ todo, onDelete, onEdit, onToggle }: TodoCardProps) {
   return (
     <div
-      className={`rounded-lg p-4 text-white space-y-4 w-full h-[200px] flex flex-col ${
+      className={`rounded-lg p-4 text-white space-y-4 w-full h-[180px] max-w-md flex flex-col ${
         todo.color.startsWith("#") ? "" : todo.color
       } ${todo.completed ? "opacity-50" : ""}`}
       style={{
@@ -24,13 +24,12 @@ export function TodoCard({ todo, onDelete, onEdit, onToggle }: TodoCardProps) {
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-2">
-          <GripVertical className="h-5 w-5 cursor-move shrink-0" />
           <h3
-            className={`font-semibold text-lg truncate ${
+            className={`font-bold  text-black/90 text-lg truncate ${
               todo.completed ? "line-through" : ""
             }`}
           >
-            {todo.title}
+            {todo.title[0].toUpperCase() + todo.title.slice(1)}
           </h3>
         </div>
         <div className="flex items-center space-x-2 shrink-0">
@@ -49,13 +48,13 @@ export function TodoCard({ todo, onDelete, onEdit, onToggle }: TodoCardProps) {
           </Button>
           <Checkbox
             checked={todo.completed}
-            onCheckedChange={() => onToggle(todo.id)}
+            onCheckedChange={() => onToggle(todo)}
             className="border-white data-[state=checked]:bg-white/20 data-[state=checked]:border-white"
           />
         </div>
       </div>
       <p
-        className={`text-sm text-white/90 overflow-y-auto flex-grow ${
+        className={`text-sm text-white/90 break-words flex-grow overflow-y-auto ${
           todo.completed ? "line-through" : ""
         }`}
       >

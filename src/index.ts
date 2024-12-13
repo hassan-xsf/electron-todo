@@ -25,8 +25,8 @@ if (require("electron-squirrel-startup")) {
 const createWindow = (): void => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    height: 800,
-    width: 1200,
+    height: 900,
+    width: 1400,
     frame: false,
     icon: path.join(__dirname, "assets/icons/pencil-icon.png"),
     webPreferences: {
@@ -131,7 +131,7 @@ ipcMain.handle("edit-todo", async (event, todo): Promise<ResponseType> => {
 
 ipcMain.handle("load-todos", async (): Promise<TodosResponseType> => {
   try {
-    const query = `SELECT * FROM todos ORDER BY id DESC`;
+    const query = `SELECT * FROM todos ORDER BY id ASC`;
     const [rows] = await db.promise().query(query);
     return { success: true, data: { todos: rows as Todo[] } };
   } catch (err: any) {

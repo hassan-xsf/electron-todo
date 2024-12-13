@@ -13,6 +13,7 @@ import { Todo, TodoColor, colorMap } from "../types/todo";
 import { Plus, Pencil } from "lucide-react";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Label } from "./ui/label";
+import { replaceTextEmojis } from "@/lib/text-to-emoji";
 
 interface CreateTodoDialogProps {
   onSubmit: (todo: Omit<Todo, "id">) => void;
@@ -57,6 +58,8 @@ export function CreateTodoDialog({
     }
     onSubmit({
       ...formData,
+      title: replaceTextEmojis(formData.title),
+      description: replaceTextEmojis(formData.description),
       color: formData.color === "custom" ? customColor : formData.color,
     });
     setOpen(false);

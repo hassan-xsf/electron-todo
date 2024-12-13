@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Calendar, GripVertical } from "lucide-react";
+import { Trash2, Calendar } from "lucide-react";
 import { Todo } from "../types/todo";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -25,7 +25,7 @@ export function TodoCard({ todo, onDelete, onEdit, onToggle }: TodoCardProps) {
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-2">
           <h3
-            className={`font-bold  text-black/90 text-lg truncate ${
+            className={`font-bold  text-white text-lg truncate ${
               todo.completed ? "line-through" : ""
             }`}
           >

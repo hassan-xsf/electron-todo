@@ -15,7 +15,7 @@ interface TodoCardProps {
 export function TodoCard({ todo, onDelete, onEdit, onToggle }: TodoCardProps) {
   return (
     <div
-      className={`rounded-lg p-4 text-white space-y-4 w-full h-[180px] max-w-md flex flex-col ${
+      className={`rounded-lg p-4 text-white space-y-4 w-full h-[180px] max-w-md shadow-xl flex flex-col ${
         todo.color.startsWith("#") ? "" : todo.color
       } ${todo.completed ? "opacity-50" : ""}`}
       style={{

@@ -23,6 +23,7 @@ export function App() {
       ...todoData,
       id: Math.random().toString(36),
     };
+    window.electron.createTodo(todoData.title);
     setTodos((prev) => [...prev, newTodo]);
   };
 

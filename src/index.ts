@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import dotenv from "dotenv";
 import { connectDB } from "./db/connect";
 dotenv.config();
@@ -49,6 +49,10 @@ app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+ipcMain.on("create-todo", (event, todoName: string) => {
+  console.log(`New Todo Created: ${todoName}`);
 });
 
 // In this file you can include the rest of your app's specific main process

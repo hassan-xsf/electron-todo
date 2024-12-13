@@ -56,6 +56,10 @@ export function CreateTodoDialog({
       setError("Please fill in all required fields");
       return;
     }
+    if (formData.title.length > 28) {
+      setError("Maximum title length is 28 characters");
+      return;
+    }
     onSubmit({
       ...formData,
       title: replaceTextEmojis(formData.title),

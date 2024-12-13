@@ -25,7 +25,7 @@ export function TodoCard({ todo, onDelete, onEdit, onToggle }: TodoCardProps) {
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-2">
           <h3
-            className={`font-bold  text-white text-lg truncate ${
+            className={`font-bold  text-white text-lg break-words truncate ${
               todo.completed ? "line-through" : ""
             }`}
           >

@@ -19,11 +19,22 @@ export function App() {
   const { theme, toggleTheme } = useTheme();
 
   const handleCreateTodo = (todoData: Omit<Todo, "id">) => {
+    const id = Math.random().toString(36);
     const newTodo: Todo = {
       ...todoData,
-      id: Math.random().toString(36),
+      id,
     };
-    window.electron.createTodo(todoData.title);
+    window.electron
+      .createTodo(todoData)
+      .then((response) => {
+        if (response.success) {
+          console.log("Todo created successfully with ID:", response.result);
+        } else {
+          console.error("Error creating todo:", response.error);
+        }
+      })
+      .catch((err: unknown) => console.error("Unexpected error:", err));
+
     setTodos((prev) => [...prev, newTodo]);
   };
 

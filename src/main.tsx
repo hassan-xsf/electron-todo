@@ -3,7 +3,9 @@ import { App } from "./App";
 import { ThemeProvider } from "./providers/ThemeProvider";
 
 function render() {
-  const root = ReactDOM.createRoot(document.getElementById("app"));
+  const root = ReactDOM.createRoot(
+    document.getElementById("app") as HTMLElement
+  );
   root.render(
     <>
       <ThemeProvider>

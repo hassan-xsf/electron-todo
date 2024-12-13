@@ -1,18 +1,23 @@
 import mysql from "mysql2";
 
-export const connectDB = () => {
-  const db = mysql.createConnection({
-    host: process.env.MYSQL_HOSTNAME, // your MySQL host
-    user: process.env.MYSQL_USER, // your MySQL username
-    password: process.env.MYSQL_PASSWORD, // your MySQL password
-    database: process.env.MYSQL_DATABASE, // your database name
-  });
+let db: mysql.Connection | null = null;
 
-  db.connect((err) => {
-    if (err) {
-      console.error("Could not connect to MySQL database:", err);
-      process.exit(1);
-    }
-    console.log("Connected to MySQL database");
-  });
+export const connectDB = () => {
+  if (!db) {
+    db = mysql.createConnection({
+      host: process.env.MYSQL_HOSTNAME,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+    });
+
+    db.connect((err) => {
+      if (err) {
+        console.error("Could not connect to MySQL database:", err);
+        process.exit(1);
+      }
+      console.log("Connected to MySQL database");
+    });
+  }
+  return db;
 };

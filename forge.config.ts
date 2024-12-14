@@ -11,7 +11,6 @@ import path from "path";
 
 const config: ForgeConfig = {
   packagerConfig: {
-    extraResource: ["node_modules/mysql2"],
     icon: path.join(__dirname, "src/assets/pencil.ico"),
   },
   rebuildConfig: {},

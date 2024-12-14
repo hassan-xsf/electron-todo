@@ -1,7 +1,7 @@
 import * as ReactDOM from "react-dom/client";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { Toaster } from "sonner";
-import { App } from "./App";
+import { App } from "./app";
 
 function render() {
   const root = ReactDOM.createRoot(

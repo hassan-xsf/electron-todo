@@ -12,6 +12,19 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (event, commandLine, workingDirectory) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
+
 const createWindow = (): void => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -51,89 +64,6 @@ app.on("activate", () => {
   }
 });
 
-<<<<<<< HEAD
-=======
-const db = connectDB();
-
->>>>>>> ac74bf4433a1e3e9816d36dc2bc854f4dd70db87
-ipcMain.on("health-check", async (event, msg: String) => {
-  console.log(msg);
-});
-
-<<<<<<< HEAD
-=======
-ipcMain.handle("create-todo", async (event, todo): Promise<ResponseType> => {
-  const { id, title, description, completed, deadline, color } = todo;
-
-  try {
-    const query = `INSERT INTO todos (id , title, description, completed , deadline , color) VALUES (? , ?, ?, ? , ? , ?)`;
-
-    await db
-      .promise()
-      .query(query, [id, title, description, completed, deadline, color]);
-    return { success: true };
-  } catch (err: any) {
-    console.error("Error inserting todo:", err);
-    return { success: false, error: err.message };
-  }
-});
-
-ipcMain.handle(
-  "delete-todo",
-  async (event, todoId: number): Promise<ResponseType> => {
-    try {
-      const query = `DELETE FROM todos WHERE id = ?`;
-      await db.promise().query(query, [todoId]);
-      return { success: true };
-    } catch (err: any) {
-      console.error("Error deleting todo:", err);
-      return { success: false, error: err.message };
-    }
-  }
-);
-
-ipcMain.handle("toggle-todo", async (event, todo): Promise<ResponseType> => {
-  try {
-    const query = `UPDATE todos SET completed=? WHERE id=?`;
-    await db.promise().query(query, [todo.completed, todo.id]);
-    return { success: true };
-  } catch (err: any) {
-    console.error("Error completing todo:", err);
-    return { success: false, error: err.message };
-  }
-});
-
-ipcMain.handle("edit-todo", async (event, todo): Promise<ResponseType> => {
-  try {
-    const query = `UPDATE todos SET title=?, description=?, completed=?, deadline=?, color=? WHERE id=?`;
-    await db
-      .promise()
-      .query(query, [
-        todo.title,
-        todo.description,
-        todo.completed,
-        todo.deadline,
-        todo.color,
-        todo.id,
-      ]);
-    return { success: true };
-  } catch (err: any) {
-    console.error("Error updating todo:", err);
-    return { success: false, error: err.message };
-  }
-});
-
-ipcMain.handle("load-todos", async (): Promise<TodosResponseType> => {
-  try {
-    const query = `SELECT * FROM todos ORDER BY id ASC`;
-    const [rows] = await db.promise().query(query);
-    return { success: true, data: { todos: rows as Todo[] } };
-  } catch (err: any) {
-    console.error("Error loading todos:", err);
-    return { success: false, error: err.message };
-  }
-});
->>>>>>> ac74bf4433a1e3e9816d36dc2bc854f4dd70db87
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();

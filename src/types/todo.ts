@@ -9,9 +9,6 @@ export interface Todo {
   color: string;
 }
 
-export interface CreateTodoType extends ResponseType {
-  resultId?: number;
-}
 export interface TodosResponseType extends ResponseType {
   data?: {
     todos: Todo[];

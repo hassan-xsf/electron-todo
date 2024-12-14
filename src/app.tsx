@@ -26,12 +26,14 @@ export function App() {
   const handleCreateTodo = (todoData: Omit<Todo, "id">) => {
     const createTodo = async () => {
       try {
-        const response = await window.electron.createTodo(todoData);
+        const lastId = Math.max(...todos.map((todo) => parseInt(todo.id)), 0);
+        const id = (lastId + 1).toString();
+        const newTodo: Todo = {
+          ...todoData,
+          id,
+        };
+        const response = await window.electron.createTodo(newTodo);
         if (response.success) {
-          const newTodo: Todo = {
-            ...todoData,
-            id: response.resultId.toString(),
-          };
           setTodos((prev) => [...prev, newTodo]);
           toast.success("Todo created successfully");
         }

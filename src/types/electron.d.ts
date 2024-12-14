@@ -3,7 +3,7 @@ import { ResponseType, Todo } from "./todo";
 declare global {
   interface Window {
     electron: {
-      createTodo: (todo: Omit<Todo, "id">) => Promise<CreateTodoType>;
+      createTodo: (todo: Todo) => Promise<ResponseType>;
       deleteTodo: (todoId: number) => Promise<ResponseType>;
       editTodo: (todo: Todo) => Promise<TodosResponseType>;
       toggleTodo: (todo: Todo) => Promise<TodosResponseType>;

@@ -1,12 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import dotenv from "dotenv";
 import { connectDB } from "./lib/connect";
-import {
-  CreateTodoType,
-  ResponseType,
-  Todo,
-  TodosResponseType,
-} from "./types/todo";
+import { ResponseType, Todo, TodosResponseType } from "./types/todo";
 import path from "path";
 dotenv.config();
 
@@ -33,7 +28,7 @@ const createWindow = (): void => {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
-
+  mainWindow.webContents.openDevTools();
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   mainWindow.setMenu(null);
@@ -68,16 +63,16 @@ ipcMain.on("health-check", async (event, msg: String) => {
   console.log(msg);
 });
 
-ipcMain.handle("create-todo", async (event, todo): Promise<CreateTodoType> => {
-  const { title, description, completed, deadline, color } = todo;
+ipcMain.handle("create-todo", async (event, todo): Promise<ResponseType> => {
+  const { id, title, description, completed, deadline, color } = todo;
 
   try {
-    const query = `INSERT INTO todos (title, description, completed , deadline , color) VALUES (?, ?, ? , ? , ?)`;
+    const query = `INSERT INTO todos (id , title, description, completed , deadline , color) VALUES (? , ?, ?, ? , ? , ?)`;
 
-    const [result]: any = await db
+    await db
       .promise()
-      .query(query, [title, description, completed, deadline, color]);
-    return { success: true, resultId: result.insertId };
+      .query(query, [id, title, description, completed, deadline, color]);
+    return { success: true };
   } catch (err: any) {
     console.error("Error inserting todo:", err);
     return { success: false, error: err.message };

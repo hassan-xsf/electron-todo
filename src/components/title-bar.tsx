@@ -1,7 +1,23 @@
 import { Minus, Square, X } from "lucide-react";
 import { Button } from "./ui/button";
 
+<<<<<<< HEAD
 export const TitleBar = () => {
+=======
+const TitleBar = () => {
+  const handleMinimize = () => {
+    window.electron.minimize();
+  };
+
+  const handleMaximize = () => {
+    window.electron.maximize();
+  };
+
+  const handleClose = () => {
+    window.electron.close();
+  };
+
+>>>>>>> ac74bf4433a1e3e9816d36dc2bc854f4dd70db87
   return (
     <div
       style={{ WebkitAppRegion: "drag" } as React.CSSProperties}
@@ -29,7 +45,11 @@ export const TitleBar = () => {
       >
         <Button
           variant="ghost"
+<<<<<<< HEAD
           onClick={() => window.electron.minimize()}
+=======
+          onClick={handleMinimize}
+>>>>>>> ac74bf4433a1e3e9816d36dc2bc854f4dd70db87
           size="icon"
           className="h-8 w-8 rounded-none text-foreground hover:bg-white/10"
         >
@@ -37,7 +57,11 @@ export const TitleBar = () => {
         </Button>
         <Button
           variant="ghost"
+<<<<<<< HEAD
           onClick={() => window.electron.maximize()}
+=======
+          onClick={handleMaximize}
+>>>>>>> ac74bf4433a1e3e9816d36dc2bc854f4dd70db87
           size="icon"
           className="h-8 w-8 rounded-none text-foreground hover:bg-white/10"
         >
@@ -46,7 +70,11 @@ export const TitleBar = () => {
         <Button
           variant="ghost"
           size="icon"
+<<<<<<< HEAD
           onClick={() => window.electron.close()}
+=======
+          onClick={handleClose}
+>>>>>>> ac74bf4433a1e3e9816d36dc2bc854f4dd70db87
           className="h-8 w-8 rounded-lg bg-red-500 text-white hover:bg-red-600"
         >
           <X className="h-4 w-4" />
@@ -55,3 +83,8 @@ export const TitleBar = () => {
     </div>
   );
 };
+<<<<<<< HEAD
+=======
+
+export default TitleBar;
+>>>>>>> ac74bf4433a1e3e9816d36dc2bc854f4dd70db87

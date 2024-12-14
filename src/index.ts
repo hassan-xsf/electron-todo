@@ -26,6 +26,7 @@ if (!gotTheLock) {
 }
 
 const createWindow = (): void => {
+  console.log("Creating window");
   // Create the browser window.
   mainWindow = new BrowserWindow({
     height: 900,

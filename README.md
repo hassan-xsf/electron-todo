@@ -1,47 +1,36 @@
-# 🚀 Electron React TypeScript Tailwind Starter
+<br>
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/f0b90056-349b-4838-8eeb-3c76cbea7797" alt="Easy Notes Logo" />
+  </a>
+</p>
 
-This starter repository provides a ready-to-use project template for building cross-platform desktop applications with Electron, React, TypeScript, and Tailwind CSS, utilizing Electron Forge for easy packaging and publishing.
+<h2 align="center" >Simple Todo Application </h3>
+<p align = "center">Star the Repo ⭐</p>
+<p align = "center">Made using Electron + React + Typescript + TailwindCSS + ❤️</p>
+
+<br />
+
+![](https://i.imgur.com/waxVImv.png)
+## Version 1.0 🔴
+
+### Image Previews: 
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/accd4a95-3419-4438-b1c7-ba9f659e52b5"/>
+  <img src = "https://github.com/user-attachments/assets/e594e851-d8bb-4ef3-a556-561e8d030bbd"/>
+  <img src = "https://github.com/user-attachments/assets/bbd75fb4-cd48-4600-90ca-373638c2a304"/>
+
+</p>
 
 ## Features
-- Electron for building cross-platform desktop applications
+- Uses Electron (quick and easy) supports cross-platform-applications.
 - React for creating scalable, component-based UIs
 - TypeScript for strongly-typed and maintainable JavaScript code
 - Tailwind CSS for utility-first styling and rapid UI development
 - Electron Forge for simple packaging and publishing of Electron applications
 
+This project was made using the Electron-React-Typescript-Tailwind Starter Kit
+Here's their repo:
+  https://github.com/rostislavjadavan/electron-react-typescript-tailwind-starter.git
 
-## Getting Started
-Clone the repository:
-```bash
-git clone https://github.com/rostislavjadavan/electron-react-typescript-tailwind-starter.git
-```
 
-Navigate to the project folder:
-```bash
-cd electron-react-typescript-tailwind-starter
-```
-
-Install dependencies:
-```bash
-npm install
-```
-
-Start the development server:
-```bash
-npm run start
-```
-
-# Package the project
-
-Package the project as an Electron app:
-
-```bash
-npm run make
-```
-
-For detailed configuration visit: https://www.electronforge.io
-
-## Customization
-
-You can easily customize the project to suit your needs by modifying the source code within the `src` directory. The project is set up with a simple example that you can use as a starting point for your application.
 
